@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from pydub import AudioSegment
-import noisereduce as nr
+import result
 
-MIN =0
-MAX = 400
+MIN = 100
+MAX = 500
 
 def restrictionFunc(min=None, max=None, target=None):
   if min is None and max is not None:
@@ -16,8 +16,8 @@ def restrictionFunc(min=None, max=None, target=None):
   else:
     return True
 
-def main():
-  sounds = AudioSegment.from_file('record.wav', 'wav')
+def main(file):
+  sounds = AudioSegment.from_file(file, 'wav')
   print(f'channel: {sounds.channels}')
   print(f'frame rate: {sounds.frame_rate}')
   print(f'duration: {sounds.duration_seconds} s')
@@ -44,6 +44,10 @@ def main():
   print('data length is {}'.format(N))
   assert N == len(f)
 
+  max_idxx = np.argmax(X)
+  f_max = f[max_idxx]
+  result.freq_array.append(f_max)
+  print(f'f_max: {f_max}')
   # データをプロット
   fig, (ax01, ax02) = plt.subplots(nrows=2, figsize=(6, 8))
   plt.subplots_adjust(wspace=0.0, hspace=0.6)
@@ -56,4 +60,4 @@ def main():
 
   plt.show()
 
-main()
+main('output.wav')
